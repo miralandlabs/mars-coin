@@ -34,7 +34,8 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install dioxus-cli
-        if: steps.cache.outputs.cache-hit != 'true'
+        # MI, anyway install latest dx
+        # if: steps.cache.outputs.cache-hit != 'true'
         uses: actions-rs/cargo@v1
         with:
           use-cross: true
