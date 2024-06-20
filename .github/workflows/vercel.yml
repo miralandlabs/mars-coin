@@ -1,0 +1,64 @@
+name: Deploy Vercel Website
+
+on:
+  push:
+    branches: ['**']
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  vercel:
+    runs-on: ubuntu-latest
+    if: ${{ ! contains(github.event.head_commit.message, '[skip deploy]') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
+
+      - name: Cache
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install dioxus-cli
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: install
+          args: dioxus-cli
+
+      - name: Build web pages
+        run: dx build --release && cp ./dist/index.html ./dist/404.html
+
+      - name: Deploy to Vercel (prod)
+        if: github.event_name == 'push' && endsWith(github.ref, 'refs/heads/main') # Deploy to prod if it is a push to `main`
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-args: '--prod'
+          vercel-org-id: ${{ secrets.ORG_ID }}  # Required
+          vercel-project-id: ${{ secrets.PROJECT_ID }} # Required 
+          working-directory: ./
+
+      - name: Deploy to Vercel (preview)
+        if: github.event_name != 'push' || !endsWith(github.ref, 'refs/heads/main') # Deploy to preview otherwise
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.ORG_ID }}  # Required
+          vercel-project-id: ${{ secrets.PROJECT_ID }} # Required 
+          working-directory: ./
