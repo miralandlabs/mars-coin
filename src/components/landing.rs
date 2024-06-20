@@ -335,7 +335,8 @@ fn SectionB() -> Element {
     let current_unix_timestamp = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     let max_supply = if current_unix_timestamp.lt(&(END_AT as u64)) {
             let time_remaining_mins = (END_AT as u64 - current_unix_timestamp) as f64 / 60f64;
-            (current_supply_amount + time_remaining_mins * 10.).to_string()
+            // (current_supply_amount + time_remaining_mins * 10.).to_string()
+            format!("{max_supply:.prec$}", max_supply = current_supply_amount + time_remaining_mins * 10.0, prec = mars::TOKEN_DECIMALS as usize)
     } else {
         "Max supply reached".to_string()
     };
