@@ -34,7 +34,7 @@ cached = "0.47.0"
 chrono = "0.4.34"
 dioxus = { version = "0.5", features = ["web", "router"] }
 dioxus-std = { version = "0.5", features = ["clipboard", "utils"] }
-env_logger = { version = "0.11.2", optional = true }
+# env_logger = { version = "0.11.2", optional = true }
 futures = "0.3.30"
 futures-util = "0.3.30"
 gloo = { version = "0.11.0", optional = true }
