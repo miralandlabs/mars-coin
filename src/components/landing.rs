@@ -151,6 +151,7 @@ fn Block(title: String, title2: String, detail: String, section: Section) -> Ele
                     match section {
                         // MI
                         // Section::A => rsx! { SectionA {} },
+                        Section::A => None,
                         Section::B => rsx! { SectionB {} },
                         _ => None
                     }
@@ -381,18 +382,5 @@ fn MarsValue(title: String, amount: String) -> Element {
             }
         }
 
-    }
-}
-
-#[component]
-fn QuestionBreak() -> Element {
-    rsx! {
-        div {
-            class: "bg-orange-500 text-white w-full py-16",
-            p {
-                class: "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-hero text-center",
-                "How much will you mine?"
-            }
-        }
     }
 }

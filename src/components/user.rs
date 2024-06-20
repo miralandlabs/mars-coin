@@ -3,14 +3,13 @@ use std::str::FromStr;
 use dioxus::prelude::*;
 use mars::BUS_ADDRESSES;
 use solana_client_wasm::solana_sdk::pubkey::Pubkey;
-// use solana_extra_wasm::program::spl_token::amount_to_ui_amount;
+use solana_extra_wasm::program::spl_token::amount_to_ui_amount;
 
 use crate::{
     components::{
         ActivityTable, BackButton, BusBubble, Copyable, MarsIcon, SendButton, TreasuryBubble,
         UserBubble,
     },
-    gateway::GatewayResult,
     hooks::{
         use_explorer_account_url, use_mars_balance_user, use_pubkey, use_user_proof,
         use_user_transfers,
@@ -36,13 +35,6 @@ pub fn User(id: String) -> Element {
     let balance = use_mars_balance_user(user_id);
     let explorer_url = use_explorer_account_url(id.clone());
     let proof = use_user_proof(user_id);
-    let claimable_rewards = match *proof.read() {
-        Some(GatewayResult::Ok(proof)) => {
-            (proof.claimable_rewards as f64) / 10f64.powf(mars::TOKEN_DECIMALS as f64)
-        }
-        _ => 0.0,
-    };
-
     let title = if let Some(index) = BUS_ADDRESSES
         .iter()
         .enumerate()
@@ -152,23 +144,24 @@ pub fn User(id: String) -> Element {
                                 }
                             }
                         }
-                        if claimable_rewards.gt(&0.0) {
-                            div {
-                                class: "{container_class}",
-                                p {
-                                    class: "{title_class}",
-                                    "Unclaimed rewards"
-                                }
-                                span {
-                                    class: "flex flex-row gap-1.5",
-                                    MarsIcon {
-                                        class: "w-3.5 h-3.5 my-auto",
-                                    }
+                        if let Some(Ok(proof)) = proof.cloned() {
+                            if proof.claimable_rewards.gt(&0) {
+                                div {
+                                    class: "{container_class}",
                                     p {
-                                        class: "{value_class} truncate",
-                                        "{claimable_rewards}"
-                                        // "{amount_to_ui_amount(claimable_rewards, mars::TOKEN_DECIMALS)}"
-                                   }
+                                        class: "{title_class}",
+                                        "Unclaimed rewards"
+                                    }
+                                    span {
+                                        class: "flex flex-row gap-1.5",
+                                        MarsIcon {
+                                            class: "w-3.5 h-3.5 my-auto",
+                                        }
+                                        p {
+                                            class: "{value_class} truncate",
+                                            "{amount_to_ui_amount(proof.claimable_rewards, mars::TOKEN_DECIMALS)}"
+                                        }
+                                    }
                                 }
                             }
                         }

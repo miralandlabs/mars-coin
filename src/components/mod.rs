@@ -6,7 +6,7 @@ mod backup_keypair_warning;
 mod balance;
 // mod banner;
 mod claim;
-mod code_block;
+// mod code_block;
 mod copyable;
 // mod download;
 mod export_key;

@@ -50,7 +50,7 @@ fn worker_options() -> WorkerOptions {
 }
 
 pub fn create_web_worker(cx: UseChannel<WebWorkerResponse>) -> Worker {
-    log::info!("Creating worker...");
+    log::info!("Creating webworker...");
     let worker = Worker::new_with_options("worker.js", &worker_options()).unwrap();
 
     // On message

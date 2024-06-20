@@ -36,10 +36,10 @@ lazy_static! {
 // MI, only 1 web worker for current algorithm
 fn fetch_logical_processors() -> usize {
     // MI
-    // let _window = window().expect("should have a window");
+    let _window = window().expect("should have a window");
     // let navigator = window.navigator();
     // navigator.hardware_concurrency() as usize
-    1
+    1 as usize
 }
 
 /// Miner encapsulates the logic needed to efficiently mine for valid hashes according to the application runtime and hardware.

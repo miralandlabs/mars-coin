@@ -57,7 +57,7 @@ pub fn MinerToolbarInsufficientBalanceOpen() -> Element {
                 class: "flex flex-col gap-2",
                 p {
                     class: "text-3xl md:text-4xl lg:text-5xl font-bold",
-                    "As miner, top up your wallet to pay transaction fees"
+                    "Top up your wallet to pay mining transaction fees"
                 }
                 p {
                     class: "text-lg",

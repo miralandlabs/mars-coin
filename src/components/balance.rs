@@ -1,5 +1,5 @@
 use dioxus::prelude::*;
-// use solana_extra_wasm::program::spl_token::amount_to_ui_amount;
+use solana_extra_wasm::program::spl_token::amount_to_ui_amount;
 
 use crate::{
     components::MarsIcon,
@@ -50,8 +50,8 @@ pub fn UnclaimedRewards() -> Element {
     if let Some(proof) = *proof.read() {
         if let Ok(proof) = proof {
             if proof.claimable_rewards.gt(&0) {
-                let rewards =
-                (proof.claimable_rewards as f64) / (10f64.powf(mars::TOKEN_DECIMALS as f64));
+                // let rewards =
+                // (proof.claimable_rewards as f64) / (10f64.powf(mars::TOKEN_DECIMALS as f64));
                 return rsx! {
                     div {
                         class: "flex flex-row grow justify-between mt-4 -mr-2",
@@ -68,7 +68,7 @@ pub fn UnclaimedRewards() -> Element {
                                 }
                                 p {
                                     class: "font-semibold",
-                                    "{rewards}"
+                                    "{amount_to_ui_amount(proof.claimable_rewards, mars::TOKEN_DECIMALS)}"
                                 }
                             }
                         }

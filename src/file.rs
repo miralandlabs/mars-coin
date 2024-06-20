@@ -7,7 +7,7 @@ use std::io::{self, ErrorKind, Read, Write};
 use std::path::PathBuf;
 
 fn filepath() -> PathBuf {
-    if let Some(proj_dirs) = ProjectDirs::from("com", "mars", "app") {
+    if let Some(proj_dirs) = ProjectDirs::from("com", "mars", "coin") {
         // This gives you a platform-specific config directory
         // For example, on Windows, this might be C:\Users\Username\AppData\Roaming\YourCompany\YourApp\config
         // On Linux, /home/username/.config/YourApp, and on macOS, /Users/username/Library/Application Support/com.YourCompany.YourApp

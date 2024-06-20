@@ -17,14 +17,13 @@ pub fn Download(cx: Scope) -> Element {
                     class: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-hero",
                     "Download"
                 }
-                p {
-                    class: "text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-8 font-hero",
-                    "Desktop"
-                }
-                p {
-                    "Use the Mars desktop app to avoid the limitations of browser-based mining and get the most out of your machine. "
-                }
-                // MI
+                // p {
+                //     class: "text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-8 font-hero",
+                //     "Desktop"
+                // }
+                // p {
+                //     "Use the Mars desktop app to avoid the limitations of browser-based mining and get the most out of your machine. "
+                // }
                 // li {
                 //     a {
                 //         class: "font-semibold hover:underline hover:text-orange-500",
@@ -32,15 +31,15 @@ pub fn Download(cx: Scope) -> Element {
                 //         "Download for Mac"
                 //     }
                 // }
-                li {
-                    "MacOS (coming soon...)"
-                }
-                li {
-                    "Linux (coming soon...)"
-                }
-                li {
-                    "Windows (coming soon...)"
-                }
+                // li {
+                //     "MacOS (coming soon...)"
+                // }
+                // li {
+                //     "Linux (coming soon...)"
+                // }
+                // li {
+                //     "Windows (coming soon...)"
+                // }
                 p {
                     class: "text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mt-8 font-hero",
                     "CLI"

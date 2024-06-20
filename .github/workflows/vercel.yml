@@ -39,8 +39,7 @@ jobs:
         with:
           use-cross: true
           command: install
-          args: dioxus-cli
-          # args: dioxus-cli --version 0.5.2
+          args: dioxus-cli   # args: dioxus-cli --version 0.5.2
 
       - name: Build web pages
         run: dx build --release && cp ./dist/index.html ./dist/404.html
