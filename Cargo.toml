@@ -1,12 +1,12 @@
 [package]
-name = "mars-app"
+name = "mars-coin"
 version = "0.6.0"
 description = "Mars is a cryptocurrency for sovereign individuals living in Mirascape Horizon across the galaxy."
 edition = "2021"
 license = "Apache-2.0"
 homepage = "https://mars.miraland.io"
 documentation = "https://mars.miraland.io"
-repository = "https://github.com/miraland-labs/mars-app"
+repository = "https://github.com/miraland-labs/mars-coin"
 readme = "./README.md"
 keywords = ["solana", "crypto", "mining", "mars", "miraland"]
 

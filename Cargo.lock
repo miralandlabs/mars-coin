@@ -3062,7 +3062,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mars-app"
+name = "mars-coin"
 version = "0.6.0"
 dependencies = [
  "async-std",

@@ -8,7 +8,7 @@
     
     <!-- Disable App Nap -->
     <key>com.apple.security.application-identifier</key>
-    <string>$(AppIdentifierPrefix)com.mars.app</string>
+    <string>$(AppIdentifierPrefix)com.mars.coin</string>
 </dict>
 </plist>
 
