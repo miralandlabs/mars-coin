@@ -15,7 +15,7 @@ pub fn Home() -> Element {
             }
             Balance {}
             // MI
-            Activity {}
+            // Activity {}
         }
     }
 }

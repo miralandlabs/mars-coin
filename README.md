@@ -1,1 +1,1 @@
-# Mars app derived from and credited to Ore app
+# Mars coin web app derived from and credited to Ore app

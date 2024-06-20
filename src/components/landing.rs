@@ -149,7 +149,8 @@ fn Block(title: String, title2: String, detail: String, section: Section) -> Ele
                 div {
                     class: "flex h-full w-full",
                     match section {
-                        Section::A => rsx! { SectionA {} },
+                        // MI
+                        // Section::A => rsx! { SectionA {} },
                         Section::B => rsx! { SectionB {} },
                         _ => None
                     }
@@ -324,10 +325,17 @@ fn SectionB() -> Element {
         .map(|s| s.ui_amount_string)
         .unwrap_or_else(|| "Err".to_string());
 
+    let current_supply_amount = supply
+        .cloned()
+        .and_then(|s| s.ok())
+        .map(|s| s.ui_amount)
+        .unwrap_or(Some(0.))
+        .unwrap();
+
     let current_unix_timestamp = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     let max_supply = if current_unix_timestamp.lt(&(END_AT as u64)) {
             let time_remaining_mins = (END_AT as u64 - current_unix_timestamp) as f64 / 60f64;
-            (time_remaining_mins * 10.).to_string()
+            (current_supply_amount + time_remaining_mins * 10.).to_string()
     } else {
         "Max supply reached".to_string()
     };

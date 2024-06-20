@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>com.mars.app</string>
+    <string>com.mars.coin</string>
     <key>CFBundleName</key>
     <string>Mars</string>
     <key>CFBundleVersion</key>

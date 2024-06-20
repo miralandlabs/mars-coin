@@ -176,9 +176,9 @@ pub fn User(id: String) -> Element {
                 }
             }
             // MI
-            UserActivity {
-                user_id: user_id
-            }
+            // UserActivity {
+            //     user_id: user_id
+            // }
         }
     }
 }
