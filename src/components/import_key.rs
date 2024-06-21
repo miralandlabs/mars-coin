@@ -124,7 +124,9 @@ fn ImportKeyImport() -> Element {
     let mut enable_import_button = use_signal(|| false);
     let mut private_key_input = use_signal(|| "".to_string());
     let gateway = use_gateway();
-    let nav = navigator();
+    // let nav = navigator(); // MI
+    let nav = use_navigator();
+    log::info!("OK: ... {}", private_key_input.read().clone()); // MI
 
     use_future(move || {
         // let private_key_input = private_key_input.clone();
