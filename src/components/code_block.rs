@@ -1,11 +1,13 @@
 use dioxus::prelude::*;
+#[cfg(feature = "desktop")]
 use dioxus_std::clipboard::use_clipboard;
-
 use crate::components::CopyIcon;
+#[cfg(feature = "web")]
+use crate::hooks::use_clipboard;
 
 #[component]
 pub fn CodeBlock(text: String) -> Element {
-    let mut clipboard = use_clipboard();
+    let clipboard = use_clipboard();
     let mut solid = use_signal(|| false);
     use_future(move || async move {
         if *solid.read() {
@@ -28,7 +30,16 @@ pub fn CodeBlock(text: String) -> Element {
             button {
                 class: "flex shrink-0 px-2 py-1 mb-auto rounded hover-100 active-200 transition-colors",
                 onclick: move |_e| {
+                    // clipboard.set(text.clone()).ok();
+
+                    #[cfg(feature = "web")]
+                    if let Some(cb) = clipboard.clone() {
+                        let _ = cb.write_text(&text);
+                    }
+
+                    #[cfg(feature = "desktop")]
                     clipboard.set(text.clone()).ok();
+                    
                     solid.set(true);
                 },
                 CopyIcon {

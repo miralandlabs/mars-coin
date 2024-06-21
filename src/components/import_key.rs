@@ -16,6 +16,8 @@ pub enum ImportKeyStep {
     Import,
 }
 
+// MI
+#[component]
 pub fn ImportKey() -> Element {
     let mut step = use_signal(|| ImportKeyStep::Loading);
     let sol_balance = use_sol_balance();
@@ -59,6 +61,8 @@ pub fn ImportKey() -> Element {
     e
 }
 
+// MI
+#[component]
 fn ImportKeyLoading() -> Element {
     rsx! {
         div {
@@ -88,6 +92,8 @@ fn ImportKeyWarning(step: Signal<ImportKeyStep>, balance: u64) -> Element {
     }
 }
 
+// MI
+#[component]
 fn ImportKeyHeader() -> Element {
     rsx! {
         div {
@@ -109,6 +115,8 @@ fn ImportKeyHeader() -> Element {
 
 const KEY_LENGTH: usize = 64;
 
+// MI
+#[component]
 fn ImportKeyImport() -> Element {
     let mut sol_balance = use_signal::<Option<u64>>(|| None);
     let mut keypair_persistent = use_keypair_persistent();

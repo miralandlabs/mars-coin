@@ -1,7 +1,9 @@
 use dioxus::prelude::*;
+#[cfg(feature = "desktop")]
 use dioxus_std::clipboard::use_clipboard;
-
 use crate::components::CopyIcon;
+#[cfg(feature = "web")]
+use crate::hooks::use_clipboard;
 
 #[component]
 pub fn Copyable(
@@ -26,7 +28,15 @@ pub fn Copyable(
                 button {
                     class: "flex flex-row gap-2 shrink-0 p-2 mx-auto rounded transition-colors hover-100 active-200 font-semibold",
                     onclick: move |_e| {
+                        // clipboard.set(value.clone()).ok();
+                        #[cfg(feature = "web")]
+                        if let Some(cb) = clipboard.clone() {
+                            let _ = cb.write_text(&value);
+                        }
+    
+                        #[cfg(feature = "desktop")]
                         clipboard.set(value.clone()).ok();
+
                         solid.set(true);
                     },
                     CopyIcon {
@@ -45,7 +55,15 @@ pub fn Copyable(
                 button {
                     class: "flex shrink-0 p-2 rounded transition-colors hover-100 active-200",
                     onclick: move |_e| {
+                        // clipboard.set(value.clone()).ok();
+                        #[cfg(feature = "web")]
+                        if let Some(cb) = clipboard.clone() {
+                            let _ = cb.write_text(&value);
+                        }
+    
+                        #[cfg(feature = "desktop")]
                         clipboard.set(value.clone()).ok();
+
                         solid.set(true);
                     },
                     CopyIcon {

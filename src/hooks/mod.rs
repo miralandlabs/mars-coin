@@ -1,4 +1,6 @@
 mod use_appearance;
+#[cfg(feature = "web")]
+mod use_clipboard;
 mod use_date;
 mod use_explorer;
 mod use_gateway;
@@ -19,6 +21,8 @@ mod use_transfers;
 mod use_treasury;
 
 pub use use_appearance::*;
+#[cfg(feature = "web")]
+pub use use_clipboard::*;
 pub use use_date::*;
 pub use use_explorer::*;
 pub use use_gateway::*;

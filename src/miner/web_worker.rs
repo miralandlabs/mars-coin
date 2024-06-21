@@ -18,7 +18,7 @@ pub struct WebWorkerRequest {
 }
 
 /// Mining response for web workers
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct WebWorkerResponse {
     pub hash: KeccakHash,
     pub nonce: u64,
@@ -35,6 +35,7 @@ pub fn start_worker() {
 
     scope.set_onmessage(Some(&js_sys::Function::unchecked_from_js(
         Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
+            // if let Err(_) = from_value::<WebWorkerRequest>(e.data()) { return; }; // MI
             let req: WebWorkerRequest = from_value(e.data()).unwrap();
             let res = find_next_hash(req.hash, req.difficulty, req.nonce, req.pubkey);
             scope_.post_message(&to_value(&res).unwrap()).unwrap();
@@ -56,6 +57,7 @@ pub fn create_web_worker(cx: UseChannel<WebWorkerResponse>) -> Worker {
     // On message
     worker.set_onmessage(Some(&js_sys::Function::unchecked_from_js(
         Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
+            // if let Err(_) = from_value::<WebWorkerResponse>(e.data()) { return; }; // MI
             let res: WebWorkerResponse = from_value(e.data()).unwrap();
             async_std::task::block_on({
                 let cx = cx.clone();
@@ -67,13 +69,13 @@ pub fn create_web_worker(cx: UseChannel<WebWorkerResponse>) -> Worker {
         .into_js_value(),
     )));
 
-    // On error
-    worker.set_onerror(Some(&js_sys::Function::unchecked_from_js(
-        Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
-            log::info!("Error from worker: {:?}", e.data());
-        })
-        .into_js_value(),
-    )));
+    // // On error
+    // worker.set_onerror(Some(&js_sys::Function::unchecked_from_js(
+    //     Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
+    //         log::info!("Error from worker: {:?}", e.data());
+    //     })
+    //     .into_js_value(),
+    // )));
 
     worker
 }
