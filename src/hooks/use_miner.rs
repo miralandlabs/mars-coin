@@ -19,8 +19,7 @@ pub fn use_miner() -> Signal<Miner> {
     let miner = use_signal(|| Miner::new(cx.clone(), power_level, priority_fee));
 
     // Process web worker results
-    // MI, use_future ==> use_resource
-    let _ = use_resource(move || {
+    use_future(move || {
         let mut rx = cx.receiver();
         let gateway = gateway.clone();
         async move {
