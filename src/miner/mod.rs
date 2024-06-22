@@ -7,7 +7,7 @@ use std::rc::Rc;
 use dioxus::prelude::*;
 use dioxus_std::utils::channel::UseChannel;
 use lazy_static::lazy_static;
-use mars::{state::Proof, state::Treasury, BUS_COUNT, EPOCH_DURATION};
+use mars::{state::Proof, state::Treasury, BUS_COUNT, EPOCH_DURATION, ONE_MARS};
 use rand::Rng;
 use serde_wasm_bindgen::to_value;
 use solana_client_wasm::solana_sdk::{
@@ -41,6 +41,10 @@ fn fetch_logical_processors() -> usize {
     // navigator.hardware_concurrency() as usize
     1 as usize
 }
+
+const WARNING_REWARD_RATE: u64 = ONE_MARS.saturating_div(10); // MI
+// Odds of being selected to submit a reset tx
+const RESET_ODDS: u64 = 20;
 
 /// Miner encapsulates the logic needed to efficiently mine for valid hashes according to the application runtime and hardware.
 pub struct Miner {
@@ -159,15 +163,21 @@ pub async fn submit_solution(
                     // Submit restart epoch tx, if needed
                     if clock.unix_timestamp.ge(&epoch_end_at) {
                         // There are a lot of miners right now, randomize who tries the reset
-                        let selected_to_reset = rng.gen_range(0..10).eq(&0);
-                        if selected_to_reset {
+                        // If there are a lot of miners, randomly select into submitting tx
+                        let (odds, skip_confirm) = if treasury.reward_rate.ge(&WARNING_REWARD_RATE) {
+                            (1, false)
+                        } else {
+                            (RESET_ODDS, true)
+                        };
+                        if rng.gen_range(0..odds).eq(&0) {
+                            println!("Sending epoch reset transaction...");
                             let cu_limit_ix =
                                 ComputeBudgetInstruction::set_compute_unit_limit(CU_LIMIT_RESET);
                             let cu_price_ix =
                                 ComputeBudgetInstruction::set_compute_unit_price(priority_fee);
                             let ix = mars::instruction::reset(signer.pubkey());
                             gateway
-                                .send_and_confirm(&[cu_limit_ix, cu_price_ix, ix], false, true)
+                                .send_and_confirm(&[cu_limit_ix, cu_price_ix, ix], false, skip_confirm)
                                 .await
                                 .ok();
                         }
