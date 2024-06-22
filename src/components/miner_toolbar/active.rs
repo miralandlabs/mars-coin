@@ -15,7 +15,8 @@ pub fn MinerToolbarActive(miner: Signal<Miner>) -> Element {
     let mut toolbar_state = use_miner_toolbar_state();
 
     // Animate the hash in the miner toolbar to visualize mining.
-    use_future(move || async move {
+    // MI, use_future ==> use_resource
+    let _ = use_resource(move || async move {
         loop {
             async_std::task::sleep(std::time::Duration::from_millis(125)).await;
             if let MinerStatusMessage::Searching = toolbar_state.status_message() {

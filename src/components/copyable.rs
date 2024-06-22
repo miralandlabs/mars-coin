@@ -14,7 +14,8 @@ pub fn Copyable(
 ) -> Element {
     let clipboard = use_clipboard();
     let mut solid = use_signal(|| false);
-    use_future(move || async move {
+    // MI, use_future ==> use_resource
+    let _ = use_resource(move || async move {
         if *solid.read() {
             async_std::task::sleep(std::time::Duration::from_secs(3)).await;
             solid.set(false);
