@@ -9,10 +9,13 @@ use crate::{
 
 pub fn Balance() -> Element {
     let balance = use_mars_balance();
-    rsx! {
-        div {
-            class: "flex flex-row w-full min-h-16 rounded justify-between",
-            if let Some(Ok(balance)) = balance.cloned() {
+    if let Some(balance) = balance.cloned() {
+        let amount = balance
+            .map(|b| b.real_number_string_trimmed())
+            .unwrap_or_else(|_| "0.00".to_owned());
+        rsx! {
+            div {
+                class: "flex flex-row w-full min-h-16 rounded justify-between",
                 div {
                     class: "flex flex-col grow gap-2 sm:gap-4",
                     h2 {
@@ -28,17 +31,20 @@ pub fn Balance() -> Element {
                             }
                             h2 {
                                 class: "text-3xl sm:text-4xl md:text-5xl",
-                                "{balance.real_number_string_trimmed()}"
+                                // "{balance.real_number_string_trimmed()}"
+                                "{amount}"
                             }
                         }
                         SendButton {}
                     }
                     UnclaimedRewards {}
                 }
-            } else {
-                div {
-                    class: "flex flex-row grow loading rounded",
-                }
+            }
+        }
+    } else {
+        rsx! {
+            div {
+                class: "flex flex-row w-full min-h-16 grow loading rounded",
             }
         }
     }
@@ -50,8 +56,6 @@ pub fn UnclaimedRewards() -> Element {
     if let Some(proof) = *proof.read() {
         if let Ok(proof) = proof {
             if proof.claimable_rewards.gt(&0) {
-                // let rewards =
-                // (proof.claimable_rewards as f64) / (10f64.powf(mars::TOKEN_DECIMALS as f64));
                 return rsx! {
                     div {
                         class: "flex flex-row grow justify-between mt-4 -mr-2",

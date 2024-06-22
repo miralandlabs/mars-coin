@@ -37,7 +37,7 @@ pub use backup_keypair_warning::*;
 pub use balance::*;
 // pub use banner::*;
 pub use claim::*;
-pub use code_block::*;
+// pub use code_block::*;
 pub use copyable::*;
 // pub use download::*;
 pub use export_key::*;

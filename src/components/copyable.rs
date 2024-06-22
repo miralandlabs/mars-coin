@@ -12,7 +12,7 @@ pub fn Copyable(
     value: String,
     children: Element,
 ) -> Element {
-    let mut clipboard = use_clipboard();
+    let clipboard = use_clipboard();
     let mut solid = use_signal(|| false);
     use_future(move || async move {
         if *solid.read() {

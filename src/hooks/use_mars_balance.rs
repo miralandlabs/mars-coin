@@ -13,11 +13,38 @@ pub fn use_mars_balance() -> Resource<GatewayResult<UiTokenAmount>> {
     use_resource(move || {
         let gateway = gateway.clone();
         async move {
-            gateway
+            // MI
+            // gateway
+            //     .rpc
+            //     .get_token_account_balance(&token_account_address)
+            //     .await
+            //     .map_err(GatewayError::from)
+
+            match gateway
                 .rpc
                 .get_token_account_balance(&token_account_address)
                 .await
-                .map_err(GatewayError::from)
+            {
+                Ok(token_account_balance) => {
+                    GatewayResult::Ok(token_account_balance)
+                }
+                Err(err) => {
+                    let err = GatewayError::from(err);
+                    match err {
+                        GatewayError::AccountNotFound => {
+                            GatewayResult::Ok(UiTokenAmount {
+                                ui_amount: Some(0f64),
+                                decimals: mars::TOKEN_DECIMALS,
+                                amount: "0.00".to_string(),
+                                ui_amount_string: "0.00".to_string(),
+                            })
+                        }
+                        _ => {
+                            GatewayResult::Err(err)
+                        }
+                    }
+                }
+            }
         }
     })
 }
@@ -28,11 +55,38 @@ pub fn use_mars_balance_user(pubkey: Pubkey) -> Resource<GatewayResult<UiTokenAm
     use_resource(move || {
         let gateway = gateway.clone();
         async move {
-            gateway
+            // MI
+            // gateway
+            //     .rpc
+            //     .get_token_account_balance(&token_account_address)
+            //     .await
+            //     .map_err(GatewayError::from)
+
+            match gateway
                 .rpc
                 .get_token_account_balance(&token_account_address)
                 .await
-                .map_err(GatewayError::from)
+            {
+                Ok(token_account_balance) => {
+                    GatewayResult::Ok(token_account_balance)
+                }
+                Err(err) => {
+                    let err = GatewayError::from(err);
+                    match err {
+                        GatewayError::AccountNotFound => {
+                            GatewayResult::Ok(UiTokenAmount {
+                                ui_amount: Some(0f64),
+                                decimals: mars::TOKEN_DECIMALS,
+                                amount: "0.00".to_string(),
+                                ui_amount_string: "0.00".to_string(),
+                            })
+                        }
+                        _ => {
+                            GatewayResult::Err(err)
+                        }
+                    }
+                }
+            }
         }
     })
 }

@@ -69,13 +69,13 @@ pub fn create_web_worker(cx: UseChannel<WebWorkerResponse>) -> Worker {
         .into_js_value(),
     )));
 
-    // // On error
-    // worker.set_onerror(Some(&js_sys::Function::unchecked_from_js(
-    //     Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
-    //         log::info!("Error from worker: {:?}", e.data());
-    //     })
-    //     .into_js_value(),
-    // )));
+    // On error
+    worker.set_onerror(Some(&js_sys::Function::unchecked_from_js(
+        Closure::<dyn Fn(MessageEvent)>::new(move |e: MessageEvent| {
+            log::info!("Error from webworker: {:?}", e.data());
+        })
+        .into_js_value(),
+    )));
 
     worker
 }
