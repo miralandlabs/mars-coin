@@ -133,9 +133,10 @@ fn ImportKeyImport() -> Element {
     let mut private_key_input = use_signal(|| "".to_string());
     let gateway = use_gateway();
     let nav = navigator();
-    // log::info!("OK: to import... {}", *private_key_input.read()); // MI
+    log::info!("OK: to import... {}", *private_key_input.read()); // MI
 
-    use_future(move || {
+    // MI, use_future ==> use_resource
+    let _ = use_resource(move || {
         // let private_key_input = private_key_input.clone();
         // let sol_balance = sol_balance.clone();
         // let enable_import_button = enable_import_button.clone();
