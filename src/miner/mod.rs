@@ -170,7 +170,7 @@ pub async fn submit_solution(
                             (RESET_ODDS, true)
                         };
                         if rng.gen_range(0..odds).eq(&0) {
-                            println!("Sending epoch reset transaction...");
+                            log::info!("Sending epoch reset transaction...");
                             let cu_limit_ix =
                                 ComputeBudgetInstruction::set_compute_unit_limit(CU_LIMIT_RESET);
                             let cu_price_ix =

@@ -7,6 +7,8 @@ use crate::{
     route::Route,
 };
 
+// MI
+#[component]
 pub fn Balance() -> Element {
     let balance = use_mars_balance();
     if let Some(balance) = balance.cloned() {
@@ -50,6 +52,8 @@ pub fn Balance() -> Element {
     }
 }
 
+// MI
+#[component]
 pub fn UnclaimedRewards() -> Element {
     let proof = use_proof();
 
@@ -103,6 +107,8 @@ pub fn SendButton(to: Option<String>) -> Element {
     }
 }
 
+// MI
+#[component]
 pub fn ClaimButton() -> Element {
     rsx! {
         Link {

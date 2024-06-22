@@ -5,6 +5,8 @@ use crate::{
     hooks::use_show_backup_warning,
 };
 
+// MI
+#[component]
 pub fn Home() -> Element {
     let show_backup_warning = use_show_backup_warning();
     rsx! {
