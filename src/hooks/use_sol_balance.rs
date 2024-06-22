@@ -17,6 +17,7 @@ pub fn use_sol_balance() -> Resource<GatewayResult<u64>> {
             //     .await
             //     .map_err(GatewayError::from)
 
+            // MI
             match gateway
                 .rpc
                 .get_balance(&address)

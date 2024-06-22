@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::{
-    components::{Activity, BackupKeypairWarning, Balance},
+    components::{BackupKeypairWarning, Balance},
     hooks::use_show_backup_warning,
 };
 
