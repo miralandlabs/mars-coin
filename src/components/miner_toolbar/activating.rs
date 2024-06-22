@@ -29,8 +29,7 @@ pub fn MinerToolbarActivating(miner: Signal<Miner>) -> Element {
         }
     });
 
-    // MI, use_future ==> use_resource
-    let _ = use_resource(move || {
+    use_future(move || {
         let gateway = gateway.clone();
         async move {
             if *sufficient_balance.read() {
