@@ -1,6 +1,6 @@
 [package]
 name = "mars-coin"
-version = "0.6.0"
+version = "0.6.1"
 description = "Mars is a cryptocurrency for sovereign individuals living in Mirascape Horizon across the galaxy."
 edition = "2021"
 license = "Apache-2.0"

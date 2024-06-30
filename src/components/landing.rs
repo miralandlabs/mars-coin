@@ -6,7 +6,7 @@ use web_time::{Duration, SystemTime, UNIX_EPOCH};
 
 use crate::{
     components::{ActivityIndicator, Footer, MarsIcon, MarsLogoIcon},
-    hooks::{use_is_onboarded, use_mars_supply, use_transfers, use_treasury, ActivityFilter},
+    hooks::{use_is_onboarded, use_mars_supply, use_transfers, use_treasury, use_treasury_mars_balance, ActivityFilter},
     route::Route,
     utils::asset_path,
 };
@@ -302,23 +302,26 @@ fn SimpleTransferRow(transfer: Transfer) -> Element {
 }
 
 fn SectionB() -> Element {
-    let treasury = use_treasury();
+    let _treasury = use_treasury();
     let supply = use_mars_supply();
+    let balance = use_treasury_mars_balance();
 
-    let circulating_supply = if let Some(treasury) = *treasury.read() {
-        if let Ok(treasury) = treasury {
-            if treasury.total_claimed_rewards.ge(&0) {
-                (treasury.total_claimed_rewards as f64) / 10f64.powf(mars::TOKEN_DECIMALS as f64)
-            } else {
-                0f64
-            }
-        } else {
-            0f64
-        }
-    } else {
-        0f64
-    }
-    .to_string();
+    // // MI: due to inconsistency caused by potential claim bug in legacy program, use work around:
+    // // circulating_supply = current_supply - treasury_balance
+    // let circulating_supply = if let Some(treasury) = *treasury.read() {
+    //     if let Ok(treasury) = treasury {
+    //         if treasury.total_claimed_rewards.ge(&0) {
+    //             (treasury.total_claimed_rewards as f64) / 10f64.powf(mars::TOKEN_DECIMALS as f64)
+    //         } else {
+    //             0f64
+    //         }
+    //     } else {
+    //         0f64
+    //     }
+    // } else {
+    //     0f64
+    // }
+    // .to_string();
 
     let current_supply = supply
         .cloned()
@@ -332,6 +335,26 @@ fn SectionB() -> Element {
         .map(|s| s.ui_amount)
         .unwrap_or(Some(0.))
         .unwrap();
+
+    let _treasury_balance = balance
+        .cloned()
+        .and_then(|s| s.ok())
+        .map(|s| s.ui_amount_string)
+        .unwrap_or_else(|| "Err".to_string());
+
+    let treasury_balance_amount = balance
+        .cloned()
+        .and_then(|b| b.ok())
+        .map(|b| b.ui_amount)
+        .unwrap_or(Some(0.))
+        .unwrap();
+
+    // MI: due to inconsistency caused by potential claim bug in legacy program, use work around:
+    // circulating_supply = current_supply - treasury_balance
+    let circulating_supply = 
+        format!("{circulating_supply:.prec$}", 
+            circulating_supply = current_supply_amount - treasury_balance_amount,
+            prec = mars::TOKEN_DECIMALS as usize);
 
     let current_unix_timestamp = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs();
     let max_supply = if current_unix_timestamp.lt(&(END_AT as u64)) {

@@ -2979,7 +2979,7 @@ dependencies = [
 
 [[package]]
 name = "mars-coin"
-version = "0.6.0"
+version = "0.6.1"
 dependencies = [
  "async-std",
  "bincode",
